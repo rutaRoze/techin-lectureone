@@ -2,7 +2,10 @@ package lt.techin.lectureone.controller;
 
 import lombok.RequiredArgsConstructor;
 import lt.techin.lectureone.external.OpenLibraryClient;
+import lt.techin.lectureone.external.model.BookSearchResponse;
+import lt.techin.lectureone.model.mapper.BookMapper;
 import lt.techin.lectureone.model.request.User;
+import lt.techin.lectureone.model.response.BookResponse;
 import lt.techin.lectureone.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,10 +50,10 @@ public class UserController {
 
 
     @GetMapping("/bookName")
-    public String getBookByName(
+    public BookResponse getBookByName(
             @RequestParam String bookName
     ) throws IOException, InterruptedException {
-        return openLibraryClient.lookupBookByName(bookName);
+        return BookMapper.map(openLibraryClient.lookupBookByName(bookName));
     }
 
 
