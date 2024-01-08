@@ -5,12 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-
-//public class Response {
-//
-//    List<BookSearchResponse> docs;
-//}
-
 @Setter
 @Getter
 public class BookInfo {
@@ -28,6 +22,5 @@ public class BookInfo {
 
     @JsonProperty("subject")
     private List<String> tags;
-
 
 }

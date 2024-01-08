@@ -2,20 +2,18 @@ package lt.techin.lectureone.model.response;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Getter
 @Builder
-public class BookResponse {
+@Getter
+@Setter
+public class Book {
 
-    private String title;
-
-    private int publishYear;
-
-    private String author;
-
-    private String authorId;
-
+    String openLibraryKey;
+    String title;
+    String publishDate;
+    String description;
     private List<String> tags;
 }

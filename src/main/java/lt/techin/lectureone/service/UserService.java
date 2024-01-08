@@ -29,14 +29,6 @@ public class UserService {
                         .withId(3)
                         .build());
 
-//        for (User user : userList) {
-//            if (user.getId() % 2 == 0) {
-//                user.setName("Name" + user.getId());
-//            }
-//
-//            System.out.println(user);
-//        }
-
         List<User> newList = userList.stream()
                 .filter((currentUser) -> currentUser.getId() % 2 == 0)
                 .peek((currentUser) -> currentUser.setName("Name" + currentUser.getId()))

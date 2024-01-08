@@ -1,6 +1,5 @@
 package lt.techin.lectureone.external.model;
 
-
 import lombok.Getter;
 import lombok.Setter;
 
