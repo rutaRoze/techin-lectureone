@@ -3,10 +3,10 @@ package lt.techin.lectureone.external.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
-public class BookSearchResponse {
-    Collection<BookInfo> docs;
+public class SearchResponse {
+    List<AuthorInfo> docs;
 }

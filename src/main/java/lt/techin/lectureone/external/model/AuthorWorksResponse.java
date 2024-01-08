@@ -15,7 +15,7 @@ public class AuthorWorksResponse {
     @Setter
     public static class WorkEntry {
         private String title;
-        private CreatedDate createdDate;
+        private CreatedDate created;
         private  String key;
         private  String description;
         private List<String> subjects;

@@ -7,15 +7,17 @@ import lt.techin.lectureone.model.mapper.BookMapper;
 import lt.techin.lectureone.model.response.BookResponse;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 @Service
 @RequiredArgsConstructor
 public class BookService {
 
     private final OpenLibraryClient openLibraryClient;
 
-    public BookResponse getAuthorWorks(String author) {
+    public BookResponse getAuthorWorks(String author) throws IOException, InterruptedException {
         String olid = openLibraryClient.getAuthorOlid(author);
-        AuthorWorksResponse authorWorksResponse = openLibraryClient.geWorks(olid);
+        AuthorWorksResponse authorWorksResponse = openLibraryClient.getWorks(olid);
 
         return BookMapper.map(authorWorksResponse, author);
     }

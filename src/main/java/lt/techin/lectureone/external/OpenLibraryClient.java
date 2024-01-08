@@ -4,12 +4,13 @@ package lt.techin.lectureone.external;
 //import jakarta.ws.rs.core.UriBuilder;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import lt.techin.lectureone.external.model.AuthorWorksResponse;
-import lt.techin.lectureone.external.model.BookSearchResponse;
+import lt.techin.lectureone.external.model.SearchResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
@@ -28,40 +29,16 @@ public class OpenLibraryClient {
     private HttpClient httpClient = HttpClient.newHttpClient();
 
     private ObjectMapper mapper = JsonMapper.builder()
-            .configure(JsonGenerator.Feature.IGNORE_UNKNOWN,true)
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false)
+            .configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true)
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             .build();
     private String baseURI = "openlibrary.org";
-    private String searchEndpoint = "/search.json";
     private String searchAuthorsEndpoint = "/search/authors.json";
     private String getAuthorsWorks = "/authors/{olid}/works.json";
 
-    public BookSearchResponse lookupBookByName(String bookName) throws IOException, InterruptedException { //TODO use in service + create an endpoint
-        System.out.println("calling openlibrary api...");
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(new DefaultUriBuilderFactory().builder()
-                        .scheme("https")
-                        .host(baseURI)
-                        .path(searchEndpoint)
-                        .queryParam("q", bookName)
-                        .build())
-                .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                .header(ACCEPT, APPLICATION_JSON_VALUE)
-                .build();
-
-
-        HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-
-        //TODO map body to the model we created
-
-        BookSearchResponse response = mapper.readValue(httpResponse.body(), BookSearchResponse.class);
-
-        return response;
-    }
-
     public String getAuthorOlid(String author) throws IOException, InterruptedException {
         HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(new  DefaultUriBuilderFactory().builder()
+                .uri(new DefaultUriBuilderFactory().builder()
                         .scheme("https")
                         .host(baseURI)
                         .path(searchAuthorsEndpoint)
@@ -73,17 +50,16 @@ public class OpenLibraryClient {
 
         HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-        BookSearchResponse searchResponse = mapper.readValue(httpResponse.body(), AuthorWorksResponse.class);
+        SearchResponse searchResponse = mapper.readValue(httpResponse.body(), SearchResponse.class);
 
         return searchResponse.getDocs()
                 .getFirst()
                 .getKey();
-
     }
 
-    public AuthorWorksResponse geWorks(String olid) throws IOException, InterruptedException {
+    public AuthorWorksResponse getWorks(String olid) throws IOException, InterruptedException {
         HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(new  DefaultUriBuilderFactory().builder()
+                .uri(new DefaultUriBuilderFactory().builder()
                         .scheme("https")
                         .host(baseURI)
                         .path(getAuthorsWorks)
@@ -95,8 +71,5 @@ public class OpenLibraryClient {
         HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
         return mapper.readValue(httpResponse.body(), AuthorWorksResponse.class);
-
     }
-
-
 }

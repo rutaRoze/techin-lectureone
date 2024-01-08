@@ -9,7 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.io.IOException;
+
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 
@@ -21,26 +22,24 @@ class BookServiceTest {
     OpenLibraryClient openLibraryClientMock;
 
     @Test
-    void getAuthorWorks() {
+    void getAuthorWorks() throws IOException, InterruptedException {
 
         Mockito.when(openLibraryClientMock.getAuthorOlid(anyString())).thenReturn("OLID");
-        Mockito.when(openLibraryClientMock.getAuthorOlid(eq("OLID"))).thenReturn(new AuthorWorksResponse());
+        AuthorWorksResponse authorWorksResponse = new AuthorWorksResponse();
+        Mockito.when(openLibraryClientMock.getAuthorOlid(eq("OLID"))).thenReturn(authorWorksResponse);
 
 
-//        BookResponse actual = bookService.getAuthorWorks("testValue");
+        BookResponse actual = bookService.getAuthorWorks("testValue");
 
         Book.builder()
                 .title("Title")
-                .descritpion("Description")
+                .description("Description")
                 .publishDate("Date")
                 .build();
 
-        Assertions.assertEquals("Description", actual.getDescription());
-        Assertions.assertEquals("Date", actual.getDate());
-        Assertions.assertEquals("Title", actual.getTitle());
-
-        Assertions.assertTrue();
-
+        Book firstBook = actual.getBooks().getFirst();
+        Assertions.assertEquals("Description", firstBook.getDescription());
+        Assertions.assertEquals("Date", firstBook.getPublishDate());
+        Assertions.assertEquals("Title", firstBook.getTitle());
     }
-
 }
