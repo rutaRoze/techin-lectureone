@@ -1,16 +1,12 @@
 package lt.techin.lectureone.external;
 
 
-//import jakarta.ws.rs.core.UriBuilder;
-
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import lt.techin.lectureone.external.model.AuthorWorksResponse;
 import lt.techin.lectureone.external.model.SearchResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
