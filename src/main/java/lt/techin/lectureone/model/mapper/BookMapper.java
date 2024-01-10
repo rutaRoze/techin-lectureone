@@ -12,15 +12,23 @@ public class BookMapper {
 
         BookInfo bookInfo = bookSearchResponse.getDocs().iterator().next();
 
-        return BookResponse.builder()
+       BookResponse.BookResponseBuilder builder = BookResponse.builder()
                 .title(bookInfo.getTitle())
-                .publishYear(bookInfo.getFirstPublishYear())
-                .author(bookInfo.getAuthorName().getFirst())
-                .authorId(bookInfo.getAuthorKey().getFirst())
-                .tags(bookInfo.getTags())
-                .build();
+                .publishYear(bookInfo.getFirstPublishYear());
+
+               if(bookInfo.getAuthorName() != null && bookInfo.getAuthorName().isEmpty()) {
+                   builder.author(bookInfo.getAuthorName().getFirst());
+               }
+
+        if(bookInfo.getAuthorKey() != null && bookInfo.getAuthorKey().isEmpty()) {
+            builder.authorId(bookInfo.getAuthorKey().getFirst());
+        }
+
+        if(bookInfo.getTags() != null && bookInfo.getTags().isEmpty()) {
+            builder.tags(bookInfo.getTags());
+        }
+
+       return builder.build();
     }
-
-
 
 }
