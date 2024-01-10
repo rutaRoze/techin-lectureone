@@ -10,10 +10,10 @@ import lombok.ToString;
 @Getter
 public class User {
 
-    private int id;
+    public int id;
 
     @Setter
-    private String name;
-    private int age;
+    public String name;
+    public int age;
 
 }
