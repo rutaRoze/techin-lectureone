@@ -48,9 +48,11 @@ public class OpenLibraryClient {
 
         SearchResponse searchResponse = mapper.readValue(httpResponse.body(), SearchResponse.class);
 
-        return searchResponse.getDocs()
-                .getFirst()
-                .getKey();
+        if (searchResponse != null && (!searchResponse.getDocs().isEmpty())) {
+            return searchResponse.getDocs().getFirst().getKey();
+        }
+
+        return "";
     }
 
     public AuthorWorksResponse getWorks(String olid) throws IOException, InterruptedException {

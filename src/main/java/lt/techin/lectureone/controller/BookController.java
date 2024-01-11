@@ -31,8 +31,8 @@ public class BookController {
     @GetMapping
     public BookResponse getAuthorWorks(
             @RequestParam  @NotBlank String author,
-            @RequestParam @Max(15) @Min(1) int count,
-            @RequestParam @Pattern(regexp = EMAIL_REGEX) String something
+            @RequestParam @Max(15) @Min(1) int count
+            //@RequestParam @Pattern(regexp = EMAIL_REGEX) String something
     ) throws IOException, InterruptedException {
         log.debug("Called get authors works endpoint with author: {}", author);
 
