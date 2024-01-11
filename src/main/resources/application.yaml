@@ -8,6 +8,8 @@ spring:
     defaultPropertyInclusion: non-null
     deserialization:
       failOnUnknownProperties: false
+    mapper:
+      accept-case-insensitive-enums: true
   #spring:
   datasource:
     url: jdbc:h2:mem:mydb
