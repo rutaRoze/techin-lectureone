@@ -10,6 +10,9 @@ spring:
       failOnUnknownProperties: false
     mapper:
       accept-case-insensitive-enums: true
+      ACCEPT_CASE_INSENSITIVE_PROPERTIES: true
+#  server:
+#      port: 8081
   #spring:
   datasource:
     url: jdbc:h2:mem:mydb
