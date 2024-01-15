@@ -9,6 +9,7 @@ import lt.techin.lectureone.model.mapper.BookMapper;
 import lt.techin.lectureone.model.request.ReactionAction;
 import lt.techin.lectureone.model.request.RecordReactionRequest;
 import lt.techin.lectureone.model.response.BookResponse;
+import lt.techin.lectureone.model.response.ReactionByAuthorResponse;
 import lt.techin.lectureone.model.response.UserReactionResponse;
 import lt.techin.lectureone.persistence.AuthorRepository;
 import lt.techin.lectureone.persistence.ReactionRepository;
@@ -93,6 +94,30 @@ public class BookService {
         return userReactionResponse;
     }
 
+
+    public ReactionByAuthorResponse getReactionByAuthor(String olid, ReactionAction action) {
+        List<ReactionRecord> reactionRecordList = reactionRepository.findByOlid(olid);
+
+        log.debug("got records from db from author {} : {}", olid, reactionRecordList);
+
+        ReactionByAuthorResponse reactionByAuthorResponse = new ReactionByAuthorResponse();
+
+
+        try {
+            switch (action) {
+                case LIKE -> reactionByAuthorResponse.setLike(getUuidByAction(reactionRecordList, LIKE));
+
+                case DISLIKE -> reactionByAuthorResponse.setDislike(getUuidByAction(reactionRecordList, DISLIKE));
+            }
+        } catch (NullPointerException e) {
+            reactionByAuthorResponse.setLike(getUuidByAction(reactionRecordList, LIKE));
+            reactionByAuthorResponse.setDislike(getUuidByAction(reactionRecordList, DISLIKE));
+        }
+
+        return reactionByAuthorResponse;
+    }
+
+
     protected static String sanitizeAuthorKey(String author) {
         return author
                 .toUpperCase(Locale.ROOT)
@@ -105,6 +130,14 @@ public class BookService {
         return reactionRecordList.stream()
                 .filter((reactionRecord -> reactionRecord.getReactionAction().equalsIgnoreCase(action.name())))
                 .map(ReactionRecord::getOlid)
+                .toList();
+    }
+
+    protected List<String> getUuidByAction(List<ReactionRecord> reactionRecordList, ReactionAction action) {
+
+        return reactionRecordList.stream()
+                .filter((reactionRecord -> reactionRecord.getReactionAction().equalsIgnoreCase(action.name())))
+                .map(ReactionRecord::getUuid)
                 .toList();
     }
 

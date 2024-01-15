@@ -9,4 +9,6 @@ public interface ReactionRepository extends JpaRepository<ReactionRecord, String
 
     public List<ReactionRecord> findByUuid(String uuid);
 
+    public List<ReactionRecord> findByOlid(String uuid);
+
 }
